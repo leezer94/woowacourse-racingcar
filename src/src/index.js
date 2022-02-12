@@ -15,6 +15,12 @@ class RacingCar {
     this.bindEventHandlers();
   }
 
+  // Commonly used functions
+
+  clearInputValue(input) {
+    input.value = '';
+  }
+
   // Car name related functions
 
   getCarNameInputValue(input) {
@@ -42,8 +48,26 @@ class RacingCar {
     return isValid;
   }
 
+  printCarNames() {
+    if (this.isValidInput(this.getCarNameInputValue(this.$.carNameInput))) {
+      const players = this.getCarNameInputValue(this.$.carNameInput);
+
+      for (let player of players) {
+        this.$.racingCarElement.insertAdjacentHTML(
+          'beforeend',
+          carPlayerTemplate(player)
+        );
+      }
+    }
+
+    this.clearInputValue(this.$.carNameInput);
+  }
+
   bindEventHandlers() {
-    this.$.carNameSubmit.addEventListener('click', () => {});
+    this.$.carNameSubmit.addEventListener(
+      'click',
+      this.printCarNames.bind(this)
+    );
   }
 }
 
