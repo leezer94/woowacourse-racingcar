@@ -63,6 +63,26 @@ class RacingCar {
     this.clearInputValue(this.$.carNameInput);
   }
 
+  // Racing count related functions
+
+  getRacingCountInputValue(input) {
+    const { value } = input;
+
+    return Number(value);
+  }
+
+  isValidNumber(randomNumber) {
+    let isValid = false;
+
+    if (randomNumber > 3) {
+      isValid = true;
+    } else {
+      isValid;
+    }
+
+    return isValid;
+  }
+
   bindEventHandlers() {
     this.$.carNameSubmit.addEventListener(
       'click',
