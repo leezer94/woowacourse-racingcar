@@ -18,23 +18,41 @@
           </section>
           <section>
             <div class="d-flex">
-              <input type="text" class="w-100 mr-2" placeholder="자동차 이름" />
-              <button type="button" class="btn btn-cyan">확인</button>
+              <input
+                type="text"
+                id="car-name-input"
+                class="w-100 mr-2"
+                placeholder="자동차 이름"
+              />
+              <button type="button" id="car-name-submit" class="btn btn-cyan">
+                확인
+              </button>
             </div>
           </section>
           <section class="mt-5">
             <p>시도할 횟수를 입력해주세요.</p>
             <div class="d-flex">
-              <input type="number" class="w-100 mr-2" placeholder="시도 횟수" />
-              <button type="button" class="btn btn-cyan">확인</button>
+              <input
+                type="number"
+                id="racing-count-input"
+                class="w-100 mr-2"
+                placeholder="시도 횟수"
+              />
+              <button
+                type="button"
+                id="racing-count-submit"
+                class="btn btn-cyan"
+              >
+                확인
+              </button>
             </div>
           </section>
         </div>
       </div>
       <div class="d-flex justify-center mt-5">
         <section class="mt-4">
-          <div class="d-flex">
-            <div>
+          <div class="racing-car-container d-flex">
+            <!-- <div>
               <div class="car-player mr-2">EAST</div>
               <div class="forward-icon mt-2">⬇️️</div>
               <div class="forward-icon mt-2">⬇️️</div>
@@ -58,7 +76,7 @@
                   <span class="material spinner"></span>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </section>
       </div>
@@ -71,5 +89,7 @@
         </section>
       </div>
     </div>
+
+    <script type="module" src="./src/src/index.js"></script>
   </body>
 </html>
