@@ -1,6 +1,6 @@
-export const carPlayerTemplate = (carName, count) => {
+export const carPlayerTemplate = (carName) => {
   return `
-<div class ="racing-car" data-name=${carName} data-item-count = ${count}>
+<div class ="racing-car" data-name=${carName} data-racing-count = '0'>
    <div class="car-player mr-2">${carName}</div>
 </div>
 `;
