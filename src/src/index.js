@@ -4,6 +4,7 @@ import { getRandomNumber } from './utils/utils.js';
 
 class RacingCar {
   constructor() {
+    this.arrow = '⬇️️';
     this.$ = {
       carNameInput: $('#car-name-input'),
       carNameSubmit: $('#car-name-submit'),
@@ -83,11 +84,34 @@ class RacingCar {
     return isValid;
   }
 
+  printGameProgress(racingCount) {
+    const progressContainer = $$('.racing-car');
+
+    for (let i = 0; i < racingCount; i++) {
+      progressContainer.forEach((container) => {
+        if (this.isValidNumber(getRandomNumber())) {
+          container.insertAdjacentHTML(
+            'beforeend',
+            carForwardTemplate(this.arrow)
+          );
+        }
+      });
+    }
+
+    this.clearInputValue(this.$.racingCountInput);
+  }
+
   bindEventHandlers() {
     this.$.carNameSubmit.addEventListener(
       'click',
       this.printCarNames.bind(this)
     );
+
+    this.$.racingCountSubmit.addEventListener('click', () => {
+      this.printGameProgress(
+        this.getRacingCountInputValue(this.$.racingCountInput)
+      );
+    });
   }
 }
 
