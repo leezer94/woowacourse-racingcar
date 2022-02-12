@@ -8,6 +8,7 @@ class RacingCar {
     this.winners = [];
     this.arrow = '⬇️️';
     this.$ = {
+      app: $('#app'),
       carNameInput: $('#car-name-input'),
       carNameSubmit: $('#car-name-submit'),
       racingCountInput: $('#racing-count-input'),
@@ -124,7 +125,7 @@ class RacingCar {
     }
   }
 
-  decideWinners(gameResult) {
+  decideWinner(gameResult) {
     this.updateRacingCounts();
 
     const winners = [];
@@ -143,22 +144,23 @@ class RacingCar {
     this.winners = winners;
   }
 
-  printWinners() {
-    this.decideWinners(this.gameResult);
+  printWinner() {
+    this.decideWinner(this.gameResult);
 
     this.$.winnerArea.textContent = `🏆 최종 우승자: ${[...this.winners]} 🏆`;
   }
 
   bindEventHandlers() {
-    this.$.carNameSubmit.addEventListener(
-      'click',
-      this.printCarNames.bind(this)
-    );
+    this.$.app.addEventListener('click', (e) => {
+      e.stopPropagation();
 
-    this.$.racingCountSubmit.addEventListener(
-      'click',
-      this.printWinners.bind(this)
-    );
+      if (e.target.id === 'car-name-submit') {
+        this.printCarNames();
+      }
+      if (e.target.id === 'racing-count-submit') {
+        this.printWinner();
+      }
+    });
   }
 }
 
