@@ -27,6 +27,18 @@
 - [ ] 자동차 경주 게임을 완료한 후 누가 우승했는지를 알려준다. 우승자는 한 명 이상일 수 있다.
 - [ ] 우승자가 여러명일 경우 ,를 이용하여 구분한다.
 
+### ⚠️ Input Validation
+
+#### Car Name Input Value Validation
+
+      - [ ] 자동차 이름은 5자 이하
+      - [ ] 자동차 이름을 입력하지 않은 경우
+      - [ ] 자동차 이름에 공백이 포함된 경우
+
+#### Racing Count Input Value Validation
+
+      - [ ] 랜덤하게 생성된 숫자가 4 이상이면 `true` 그외는 `false` 출력
+
 ### 🎯🎯 step2
 
 - [ ] 자동차 경주 게임의 턴이 진행 될 때마다 1초의 텀(progressive 재생)을 두고 진행한다.
