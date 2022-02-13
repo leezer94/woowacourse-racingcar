@@ -1,6 +1,10 @@
 import { $, $$ } from './utils/selector.js';
 import { carPlayerTemplate, carForwardTemplate } from './utils/template.js';
-import { getRandomNumber } from './utils/utils.js';
+import {
+  getRandomNumber,
+  ableChildNodes,
+  disableChildNodes,
+} from './utils/utils.js';
 
 class RacingCar {
   constructor() {
@@ -11,8 +15,10 @@ class RacingCar {
       app: $('#app'),
       carNameInput: $('#car-name-input'),
       carNameSubmit: $('#car-name-submit'),
+      carNameForm: $('.car-name-form'),
       racingCountInput: $('#racing-count-input'),
       racingCountSubmit: $('#racing-count-submit'),
+      racingCountForm: $('.racing-count-form'),
       racingCarElement: $('.racing-car-container'),
       gameRestartBtn: $('#game-restart-button'),
       winnerArea: $('#winner'),
@@ -34,6 +40,8 @@ class RacingCar {
     progressContainer.forEach((element) => {
       element.parentNode.removeChild(element);
     });
+
+    disableChildNodes(this.$.racingCountForm);
 
     this.winners = [];
     this.$.winnerArea.textContent = `🏆 최종 우승자: ${this.winners.join(
@@ -78,6 +86,9 @@ class RacingCar {
           carPlayerTemplate(player)
         );
       });
+
+      ableChildNodes(this.$.racingCountForm);
+      disableChildNodes(this.$.carNameForm);
     }
 
     this.clearInputValue(this.$.carNameInput);
@@ -143,17 +154,18 @@ class RacingCar {
     this.updateRacingCounts();
 
     const winners = [];
+
     const racingCount = [...gameResult.values()].map((num) => Number(num));
     const maxRacingCount = Math.max(...racingCount);
 
-    gameResult.forEach((result) => {
+    for (let result of gameResult) {
       const players = result[0];
       const racingCount = result[1];
 
       if (Number(racingCount) === maxRacingCount) {
         winners.push(players);
       }
-    });
+    }
 
     this.winners = winners;
   }
