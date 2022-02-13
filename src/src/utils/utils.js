@@ -4,3 +4,15 @@ export const getRandomNumber = () => {
 
   return randomNumber;
 };
+
+export const disableChildNodes = ({ childNodes }) => {
+  childNodes.forEach((child) => {
+    child.disabled = true;
+  });
+};
+
+export const ableChildNodes = ({ childNodes }) => {
+  childNodes.forEach((child) => {
+    child.disabled = false;
+  });
+};
