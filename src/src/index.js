@@ -18,6 +18,7 @@ class RacingCar {
       winnerArea: $('#winner'),
     };
 
+    this.initDisplay();
     this.bindEventHandlers();
   }
 
@@ -25,6 +26,19 @@ class RacingCar {
 
   clearInputValue(input) {
     input.value = '';
+  }
+
+  initDisplay() {
+    const progressContainer = $$('.racing-car');
+
+    progressContainer.forEach((element) => {
+      element.parentNode.removeChild(element);
+    });
+
+    this.winners = [];
+    this.$.winnerArea.textContent = `🏆 최종 우승자: ${this.winners.join(
+      ', '
+    )} 🏆`;
   }
 
   // Car name related functions
@@ -58,12 +72,12 @@ class RacingCar {
     if (this.isValidInput(this.getCarNameInputValue(this.$.carNameInput))) {
       const players = this.getCarNameInputValue(this.$.carNameInput);
 
-      for (let player of players) {
+      players.forEach((player) => {
         this.$.racingCarElement.insertAdjacentHTML(
           'beforeend',
           carPlayerTemplate(player)
         );
-      }
+      });
     }
 
     this.clearInputValue(this.$.carNameInput);
@@ -115,14 +129,14 @@ class RacingCar {
 
     const progressContainer = $$('.racing-car');
 
-    for (let container of progressContainer) {
+    progressContainer.forEach((container) => {
       container.dataset.racingCount = container.children.length - 1;
 
       this.gameResult.set(
         container.dataset.name,
         container.dataset.racingCount
       );
-    }
+    });
   }
 
   decideWinner(gameResult) {
@@ -132,14 +146,14 @@ class RacingCar {
     const racingCount = [...gameResult.values()].map((num) => Number(num));
     const maxRacingCount = Math.max(...racingCount);
 
-    for (let result of gameResult) {
+    gameResult.forEach((result) => {
       const players = result[0];
       const racingCount = result[1];
 
       if (Number(racingCount) === maxRacingCount) {
         winners.push(players);
       }
-    }
+    });
 
     this.winners = winners;
   }
@@ -147,7 +161,9 @@ class RacingCar {
   printWinner() {
     this.decideWinner(this.gameResult);
 
-    this.$.winnerArea.textContent = `🏆 최종 우승자: ${[...this.winners]} 🏆`;
+    this.$.winnerArea.textContent = `🏆 최종 우승자: ${this.winners.join(
+      ', '
+    )} 🏆`;
   }
 
   bindEventHandlers() {
@@ -159,6 +175,9 @@ class RacingCar {
       }
       if (e.target.id === 'racing-count-submit') {
         this.printWinner();
+      }
+      if (e.target.id === 'game-restart-button') {
+        this.initDisplay();
       }
     });
   }
