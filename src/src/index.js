@@ -1,3 +1,4 @@
+import { ERROR_MESSAGE, VALIDATION } from './constants/constants.js';
 import { $, $$ } from './utils/selector.js';
 import { carPlayerTemplate, carForwardTemplate } from './utils/template.js';
 import {
@@ -57,17 +58,16 @@ class RacingCar {
     return value.split(',');
   }
 
-  // needs to be refacotred :: export alert method that this function is able to do singe work
   validateInput(inputValue) {
     let errorMessage;
 
     inputValue = inputValue.forEach((value) => {
-      if (value.length > 5) {
-        errorMessage = '5 자 이하의 자동차 이름을 입력해 주십시요.';
+      if (value.length > VALIDATION.THRESHOLD_NUMBER) {
+        errorMessage = ERROR_MESSAGE.CAR_NAME.LENGTH_OVER_5;
       } else if (!value) {
-        errorMessage = '자동차 이름을 입력해 주십시오.';
-      } else if (value.includes(' ')) {
-        errorMessage = '자동차 이름은 공백을 포함해서는 안됩니다.';
+        errorMessage = ERROR_MESSAGE.CAR_NAME.EMPTY;
+      } else if (value.includes(VALIDATION.BLANK)) {
+        errorMessage = ERROR_MESSAGE.CAR_NAME.INCLUDE_BLANK;
       } else {
         errorMessage;
       }
