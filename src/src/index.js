@@ -57,27 +57,44 @@ class RacingCar {
     return value.split(',');
   }
 
-  isValidInput(inputValue) {
-    let isValid = true;
+  // needs to be refacotred :: export alert method that this function is able to do singe work
+  validateInput(inputValue) {
+    let errorMessage;
 
     inputValue = inputValue.forEach((value) => {
       if (value.length > 5) {
-        isValid = false;
-        alert('5 자 이하의 자동차 이름을 입력해 주십시요.');
+        errorMessage = '5 자 이하의 자동차 이름을 입력해 주십시요.';
       } else if (!value) {
-        isValid = false;
-        alert('자동차 이름을 입력해 주십시오.');
+        errorMessage = '자동차 이름을 입력해 주십시오.';
       } else if (value.includes(' ')) {
-        isValid = false;
-        alert('자동차 이름은 공백을 포함해서는 안됩니다.');
+        errorMessage = '자동차 이름은 공백을 포함해서는 안됩니다.';
+      } else {
+        errorMessage;
       }
     });
+
+    return errorMessage;
+  }
+
+  isValidInput(errorMessage) {
+    let isValid = false;
+
+    if (errorMessage) {
+      isValid;
+      alert(errorMessage);
+    } else if (!errorMessage) {
+      isValid = true;
+    }
 
     return isValid;
   }
 
   printCarNames() {
-    if (this.isValidInput(this.getCarNameInputValue(this.$.carNameInput))) {
+    if (
+      this.isValidInput(
+        this.validateInput(this.getCarNameInputValue(this.$.carNameInput))
+      )
+    ) {
       const players = this.getCarNameInputValue(this.$.carNameInput);
 
       players.forEach((player) => {
