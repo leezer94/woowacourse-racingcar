@@ -7,6 +7,7 @@ export const ERROR_MESSAGE = {
 };
 
 export const VALIDATION = {
+  CARNAME_LENGTH: 5,
   THRESHOLD_NUMBER: 3,
   BLANK: ' ',
 };
