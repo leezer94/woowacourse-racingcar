@@ -7,7 +7,7 @@ import {
   disableChildNodes,
 } from './utils/utils.js';
 
-class RacingCar {
+export class RacingCar {
   constructor() {
     this.gameResult = new Map();
     this.winners = [];
@@ -42,6 +42,7 @@ class RacingCar {
       element.parentNode.removeChild(element);
     });
 
+    ableChildNodes(this.$.carNameForm);
     disableChildNodes(this.$.racingCountForm);
 
     this.winners = [];
@@ -62,7 +63,7 @@ class RacingCar {
     let errorMessage;
 
     inputValue = inputValue.forEach((value) => {
-      if (value.length > VALIDATION.THRESHOLD_NUMBER) {
+      if (value.length > VALIDATION.CARNAME_LENGTH) {
         errorMessage = ERROR_MESSAGE.CAR_NAME.LENGTH_OVER_5;
       } else if (!value) {
         errorMessage = ERROR_MESSAGE.CAR_NAME.EMPTY;
@@ -122,7 +123,7 @@ class RacingCar {
   isValidNumber(randomNumber) {
     let isValid = false;
 
-    if (randomNumber > 3) {
+    if (randomNumber > VALIDATION.THRESHOLD_NUMBER) {
       isValid = true;
     } else {
       isValid;
@@ -134,7 +135,7 @@ class RacingCar {
   printGameProgress(racingCount) {
     const progressContainer = $$('.racing-car');
 
-    for (let i = 0; i < racingCount; i++) {
+    [...new Array(racingCount)].map(() => {
       progressContainer.forEach((container) => {
         if (this.isValidNumber(getRandomNumber())) {
           container.insertAdjacentHTML(
@@ -143,7 +144,7 @@ class RacingCar {
           );
         }
       });
-    }
+    });
 
     this.clearInputValue(this.$.racingCountInput);
   }
