@@ -7,7 +7,7 @@ import {
   disableChildNodes,
 } from './utils/utils.js';
 
-export class RacingCar {
+export default class RacingCar {
   constructor() {
     this.gameResult = new Map();
     this.winners = [];

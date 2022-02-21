@@ -47,9 +47,7 @@
   - [x] 입력창 초기화되는지
 - [x] 자동차 이름 입력후 자동차이름 입력 input disabled attribute 포함
 - [x] 자동차 이름 입력후 시도횟수 input disabled attribute 제거
-- [ ] 시도횟수 입력후 확인버튼 클릭시 게임 진행 하는지
-  - [ ] 랜덤함수 4 이상의 숫자 일시 `true` 리턴
-  - [ ] 입력창 초기화 되는지
+- [x] 시도횟수 입력후 확인버튼 클릭시 게임 진행 하는지
 - [ ] raicing count 가 가장 높은 사람과 최종 우승자가 동일한지
 - [ ] 최종 우승자 여러명일시 ',' 이용해 구분하는지
 - [ ] 시도횟수 추가 입력시에 추가된 racing count 만큼 게임 진행 하는지
@@ -67,7 +65,7 @@
 ### Step 1 데모 페이지
 
 <p align="middle">
-  <a href="https://leezer94.github.io/woowacourse-racingcar/">🖥️ 스텝 2 데모 링크</a>
+  <a href="https://leezer94.github.io/woowacourse-racingcar/">🖥️ 스텝 1 데모 링크</a>
 </p>
 
 ### 🎯🎯 step2
