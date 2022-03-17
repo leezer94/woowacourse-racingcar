@@ -4,7 +4,6 @@ describe('racingcar', () => {
   beforeEach(() => {
     cy.visit('http://127.0.0.1:5500/javascript-racingcar/');
   });
-
   const carNames = ['WEST', 'EAST', 'NORTH', 'SOUTH'];
 
   it('should initialize display when page is loaded', () => {

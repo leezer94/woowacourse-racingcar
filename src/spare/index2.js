@@ -1,5 +1,5 @@
-import { ERROR_MESSAGE, VALIDATION } from './constants/constants.js';
-import { $, $$ } from './utils/selector.js';
+import { ERROR_MESSAGE, VALIDATION } from './common/constants/constants.js';
+import { $, $$ } from './utils/DOM.js';
 import { carPlayerTemplate, carForwardTemplate } from './utils/template.js';
 import {
   getRandomNumber,

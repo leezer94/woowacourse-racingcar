@@ -11,3 +11,10 @@ export const VALIDATION = {
   THRESHOLD_NUMBER: 3,
   BLANK: ' ',
 };
+
+export const POSITION = {
+  AFTEREND: 'afterend',
+  BEFOREEND: 'beforeend',
+};
+
+export const ARROW = '⬇️️';
