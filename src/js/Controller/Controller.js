@@ -85,6 +85,8 @@ export default class Controller {
 
           this.decideRacingWinner($$('.racing-car'));
 
+          await delay(2000);
+
           this.view.printRacingWinners($('#game-result-text'), this.model.state.winners, this.model.state.isGameOver);
         }
       }

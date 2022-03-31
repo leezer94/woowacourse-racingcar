@@ -1,5 +1,5 @@
 import { ERROR_MESSAGE } from '../common/constants/constants.js';
-import { $, $$ } from './DOM.js';
+import { $$ } from './DOM.js';
 import { clearInputValue } from './utils.js';
 
 export const isValidInputValue = (input) => {

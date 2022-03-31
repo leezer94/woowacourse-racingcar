@@ -23,3 +23,27 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('checkAlertMessage', (expectedMessage) => {
+  cy.on('window:alert', (message) => {
+    expect(message).to.equal(expectedMessage);
+  });
+});
+
+Cypress.Commands.add('inputCarNames', (names) => {
+  cy.get('#car-name-input').type(names);
+});
+
+Cypress.Commands.add('inputRacingCount', (count) => {
+  cy.get('#racing-count-input').type(count);
+});
+
+Cypress.Commands.add('submitCarNames', (names) => {
+  cy.inputCarNames(names);
+  cy.get('#car-name-submit').click();
+});
+
+Cypress.Commands.add('submitRacingCount', (count) => {
+  cy.inputRacingCount(count);
+  cy.get('#racing-count-submit').click();
+});

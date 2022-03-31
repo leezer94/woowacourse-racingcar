@@ -1,109 +1,69 @@
-/// <reference types="cypress" />
+import { ERROR_MESSAGE } from '../../src/js/common/constants/constants.js';
 
-describe('racingcar', () => {
+describe('RacingCar Game', () => {
+  const BASE_URL = 'http://127.0.0.1:5500/javascript-racingcar/';
+  const VALID_CAR_NAMES = '123,234,345';
+  const VALID_RACING_COUNT = 3;
+  const milliseconds = 1000;
+
   beforeEach(() => {
-    cy.visit('http://127.0.0.1:5500/javascript-racingcar/');
+    cy.visit(BASE_URL);
   });
-  const carNames = ['WEST', 'EAST', 'NORTH', 'SOUTH'];
 
   it('should initialize display when page is loaded', () => {
-    cy.get('#racing-count-input').should('have.attr', 'disabled');
-    cy.get('#winner').should('contain', '🏆 최종 우승자:  🏆');
+    cy.get('#game-process-section').should('have.attr', 'hidden');
+    cy.get('#game-result-section').should('have.attr', 'hidden');
   });
 
-  // car name related
+  it('should alert error message when submitted car name length is over 5 letters', () => {
+    const invalidCarName = ['WEST', 'BROCKHAMPTON'];
 
-  it('should be able to display car names when button is clicked', () => {
-    cy.get('#car-name-input').type(carNames.join(','));
-    cy.get('#car-name-submit').click();
-    cy.get('.racing-car')
-      .should('be.visible')
-      .should('contain', 'WEST')
-      .should('contain', 'EAST')
-      .should('contain', 'NORTH')
-      .should('contain', 'SOUTH');
+    cy.submitCarNames(invalidCarName.join(','));
+    cy.checkAlertMessage(ERROR_MESSAGE.CAR_NAME.LENGTH_OVER_5);
   });
 
-  it('should not pass the validator when length of the car name is over 5 charactors', () => {
-    cy.get('#car-name-input').type('nameWithOverCharacters');
-    cy.get('#car-name-submit').click();
-    cy.on('window:alert', (text) => {
-      expect(text).to.contain('5 자 이하의 자동차 이름을 입력해 주십시요.');
-      return false;
-    });
+  it('should alert error message when car name is not submitted, submitted car name length is less than 1 letter or blank', () => {
+    const invalidCarName = ' ';
+
+    cy.submitCarNames(invalidCarName);
+    cy.checkAlertMessage(ERROR_MESSAGE.CAR_NAME.EMPTY);
   });
 
-  it('should not pass the validator when car name includes empty sapce', () => {
-    cy.get('#car-name-input').type('this, name, is, made, with,empty,space');
-    cy.get('#car-name-submit').click();
-    cy.on('window:alert', (text) => {
-      expect(text).to.contain('자동차 이름은 공백을 포함해서는 안됩니다.');
-    });
+  it('should alert error message when car name is not submitted, submitted car name includes blank', () => {
+    const invalidCarName = 'BR CK';
+
+    cy.submitCarNames(invalidCarName);
+    cy.checkAlertMessage(ERROR_MESSAGE.CAR_NAME.INCLUDE_BLANK);
   });
 
-  it('should not pass the validator when car name is not submitted', () => {
-    cy.get('#car-name-submit').click();
-    cy.on('window:alert', (text) => {
-      expect(text).to.contain('자동차 이름을 입력해 주십시오.');
-    });
+  it('should show racing count input when valid car name(s) is(are) submitted', () => {
+    cy.submitCarNames(VALID_CAR_NAMES);
+    cy.get('#racing-count-input').should('be.visible');
   });
 
-  it('should clear car name input when right input value is submitted', () => {
-    cy.get('#car-name-input').type(carNames.join(','));
-    cy.get('#car-name-submit').click();
-    cy.get('#car-name-input').should('contain', '');
+  it('should alert error message when invalid racing count number is submitted', () => {
+    const count = 0;
+
+    cy.submitCarNames(VALID_CAR_NAMES);
+    cy.submitRacingCount(count);
+    cy.checkAlertMessage(ERROR_MESSAGE.RACING_COUNT.MIN_MAX);
   });
 
-  it('should clear car name input when input does not pass the validator', () => {
-    cy.get('#car-name-input').type('oneTwoThreeFourFive');
-    cy.get('#car-name-submit').click();
-    cy.on('window:alert', (text) => {
-      expect(text).to.contain('5 자 이하의 자동차 이름을 입력해 주십시요.');
-      return false;
-    });
-    cy.get('#car-name-input').should('contain', '');
+  it('should decide racing winner the show winners after 2 second', () => {
+    const carName = '일번마';
+    cy.submitCarNames(carName);
+    cy.submitRacingCount(VALID_RACING_COUNT);
+    cy.clock();
+    cy.tick(VALID_RACING_COUNT * milliseconds + 2000);
+    cy.tick(2000);
+    cy.checkAlertMessage(`축하합니다! 최종 우승자 : ${carName} 🏆 입니다. `);
   });
 
-  it('should contain abled attribute when validate car name(s) is(are) submitted', () => {
-    cy.get('#car-name-input').type(carNames.join(','));
-    cy.get('#car-name-submit').click();
-    cy.get('#car-name-input').should('contain', '');
-    cy.get('.racing-car')
-      .should('be.visible')
-      .should('contain', 'WEST')
-      .should('contain', 'EAST')
-      .should('contain', 'NORTH')
-      .should('contain', 'SOUTH');
-    cy.get('#car-name-input').should('have.attr', 'disabled');
-  });
-
-  // racing count related
-
-  it('should remove disabled attribute when validate car name(s) is(are) submitted', () => {
-    cy.get('#car-name-input').type(carNames.join(','));
-    cy.get('#car-name-submit').click();
-    cy.get('#car-name-input').should('contain', '');
-    cy.get('.racing-car')
-      .should('be.visible')
-      .should('contain', 'WEST')
-      .should('contain', 'EAST')
-      .should('contain', 'NORTH')
-      .should('contain', 'SOUTH');
-    cy.get('#racing-count-input').should('not.have.attr', 'disabled');
-  });
-
-  it('should print game progress when validate racing count is submitted ', () => {
-    cy.get('#car-name-input').type(carNames.join(','));
-    cy.get('#car-name-submit').click();
-    cy.get('#car-name-input').should('contain', '');
-    cy.get('.racing-car')
-      .should('be.visible')
-      .should('contain', 'WEST')
-      .should('contain', 'EAST')
-      .should('contain', 'NORTH')
-      .should('contain', 'SOUTH');
-    cy.get('#racing-count-input').type(3);
-    cy.get('#racing-count-submit').click();
-    cy.get('.racing-car').should('contain', '⬇️️');
+  it('should reset display when game reset button is clicked', () => {
+    cy.submitCarNames(VALID_CAR_NAMES);
+    cy.submitRacingCount(VALID_RACING_COUNT);
+    cy.get('#game-restart-button').click();
+    cy.get('#game-process-section').should('have.attr', 'hidden');
+    cy.get('#game-result-section').should('have.attr', 'hidden');
   });
 });
