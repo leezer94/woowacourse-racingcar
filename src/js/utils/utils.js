@@ -25,10 +25,12 @@ export const showElement = (...targets) => {
   targets.forEach((target) => (target.hidden = false));
 };
 
-export const hideElement = (...targets) => {
+export const hideElements = (...targets) => {
   targets.forEach((target) => (target.hidden = true));
 };
 
 export const clearInputValue = (inputs) => {
   [...inputs].map((input) => (input.value = ''));
 };
+
+export const delay = (time) => new Promise((resolve) => setTimeout(resolve, time));

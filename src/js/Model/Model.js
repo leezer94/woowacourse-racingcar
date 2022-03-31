@@ -1,12 +1,14 @@
 import { $$ } from '../utils/DOM.js';
 import { clearInputValue } from '../utils/utils.js';
 
-export class Model {
+export default class Model {
   constructor() {
     this.state = {
       carNames: [],
       racingCount: 0,
+      gameCount: 0,
       winners: [],
+      isGameOver: false,
     };
   }
 
@@ -39,12 +41,14 @@ export class Model {
     });
   }
 
-  resetState() {
+  initState() {
     this.setState({
       ...this.state,
-      winners: [],
-      racingCount: 0,
       carNames: [],
+      racingCount: 0,
+      gameCount: 0,
+      winners: [],
+      isGameOver: false,
     });
   }
 }

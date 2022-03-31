@@ -2,10 +2,14 @@ import { ARROW } from '../common/constants/constants.js';
 
 export const loadingTemplate = () => {
   return `<div class="d-flex justify-center mt-4">
-            <div class="relative spinner-container hidden">
+            <div class="relative spinner-container">
               <span class="material spinner"></span>
             </div>
           </div>`;
+};
+
+export const progressTemplate = () => {
+  return `<div class="forward-icon mt-2">${ARROW}</div>`;
 };
 
 export const carNamesTemplate = (carNames) => {
@@ -26,8 +30,4 @@ export const carNamesTemplate = (carNames) => {
         </section>
       </div>
     `;
-};
-
-export const progressTemplate = () => {
-  return `<div class="forward-icon mt-2">${ARROW}</div>`;
 };

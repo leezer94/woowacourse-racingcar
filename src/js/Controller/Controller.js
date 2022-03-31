@@ -1,8 +1,8 @@
 import { $, $$ } from '../utils/DOM.js';
-import { disableChildNodes, hideElement, showElement, ableChildNodes } from '../utils/utils.js';
-import { isValidInputValue, alertMessage } from '../utils/validator.js';
+import { disableChildNodes, hideElements, showElement, ableChildNodes, delay } from '../utils/utils.js';
+import { isValidInputValue, isValidRacingCount, alertMessage } from '../utils/validator.js';
 
-export class Controller {
+export default class Controller {
   constructor(model, view) {
     this.model = model;
     this.view = view;
@@ -10,21 +10,25 @@ export class Controller {
     this.$ = {
       app: $('#app'),
     };
+
     this.bindEventListener();
   }
 
-  decideRacingWinner() {
-    const progressContainers = [...$$('.racing-car')];
+  getMaxRacingCount(target) {
+    const progressContainers = [...target];
     const racingCountArr = [];
-    const winnersArr = [];
-
-    let maxRacingCount;
 
     progressContainers.map((container) => {
       racingCountArr.push(container.children.length - 1);
     });
 
-    maxRacingCount = Math.max(...racingCountArr);
+    return Math.max(...racingCountArr);
+  }
+
+  decideRacingWinner(target) {
+    const progressContainers = [...target];
+    const maxRacingCount = this.getMaxRacingCount(target);
+    const winnersArr = [];
 
     progressContainers.map((container) => {
       if (container.children.length - 1 === maxRacingCount) {
@@ -35,8 +39,22 @@ export class Controller {
     this.model.updateRacingWinners(winnersArr);
   }
 
+  async playEachGame() {
+    for (let i = 0; i < this.model.state.racingCount; i++) {
+      await delay(1000);
+
+      this.model.state.gameCount += 1;
+
+      this.view.printGameProgress($$('.car-player'));
+
+      if (this.model.state.gameCount === this.model.state.racingCount) this.model.state.isGameOver = true;
+    }
+  }
+
+  isGameOver() {}
+
   bindEventListener() {
-    this.$.app.addEventListener('click', ({ target }) => {
+    this.$.app.addEventListener('click', async ({ target }) => {
       if (target.tagName !== 'BUTTON') return;
 
       if (target.id === 'car-name-submit') {
@@ -45,36 +63,40 @@ export class Controller {
 
           disableChildNodes($('.car-name-form'));
 
-          showElement($('#racing-count-section'), $('#game-process-section'));
-
           this.view.printCarNames($('#game-process-section'), this.model.state.carNames);
+
+          showElement($('#racing-count-section'), $('#game-process-section'));
         }
       }
 
       if (target.id === 'racing-count-submit') {
-        this.model.updateRacingCount($('#racing-count-input').value);
+        if (alertMessage(isValidRacingCount($('#racing-count-input')))) {
+          this.model.updateRacingCount($('#racing-count-input').value);
 
-        disableChildNodes($('.racing-count-form'));
+          disableChildNodes($('.racing-count-form'));
 
-        this.view.printGameProgress($$('.racing-car'), this.model.state.racingCount);
+          this.view.printLoadingTemplate($$('.racing-car'));
 
-        showElement($('#game-result-section'));
+          await this.playEachGame();
 
-        if (this.model.state.racingCount) {
-          this.decideRacingWinner();
+          this.view.hideSpinners($$('.spinner-container'));
 
-          this.view.printRacingWinners($('#game-result-text'), this.model.state.winners);
+          showElement($('#game-result-section'));
+
+          this.decideRacingWinner($$('.racing-car'));
+
+          this.view.printRacingWinners($('#game-result-text'), this.model.state.winners, this.model.state.isGameOver);
         }
       }
 
       if (target.id === 'game-restart-button') {
-        this.model.resetState();
+        this.model.initState();
 
-        hideElement($('#racing-count-section'), $('#game-process-section'), $('#game-result-section'));
+        hideElements($('#racing-count-section'), $('#game-process-section'), $('#game-result-section'));
 
         ableChildNodes($('.car-name-form'), $('.racing-count-form'));
 
-        $('#game-process-section').innerHTML = '';
+        $('.racing-car-container').innerHTML = '';
       }
     });
   }

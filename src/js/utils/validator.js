@@ -1,4 +1,6 @@
 import { ERROR_MESSAGE } from '../common/constants/constants.js';
+import { $, $$ } from './DOM.js';
+import { clearInputValue } from './utils.js';
 
 export const isValidInputValue = (input) => {
   const carNames = input.value.split(',');
@@ -24,9 +26,17 @@ export const isValidInputValue = (input) => {
     .join('');
 };
 
+export const isValidRacingCount = (input) => {
+  if (input.value < 1 || input.value >= 100) {
+    return ERROR_MESSAGE.RACING_COUNT.MIN_MAX;
+  }
+};
+
 export const alertMessage = (errorMessage) => {
   if (errorMessage) {
     window.alert(errorMessage);
+
+    clearInputValue($$('input'));
 
     return false;
   }
